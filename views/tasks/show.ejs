@@ -1,0 +1,34 @@
+<div id="app">
+    <h1>Tasks - show</h1>
+    <hr />
+    <h1>title : {{ item.title }}</h1>
+    <div v-text="item.content"></div>
+</div>
+
+<!-- -->
+<script>
+new Vue({
+    el: '#app',
+    created () {
+        var id = "<%= params_id %>";
+        this.getItem(id)
+    },    
+    data: {
+//       tasks: [],
+        item : [],
+        title:'',
+        content:''        
+    },
+    methods: {
+        getItem: function(id) {
+            axios.get("/api/tasks_show/" + id )
+            .then(res =>  {
+                var dat = res.data.docs
+                this.item = dat;
+                console.log( dat )
+            })            
+        }
+    }
+
+});
+</script>
