@@ -26,8 +26,9 @@ router.get('/', function(req, res) {
 *********************************/
 router.post('/',async function(req, res){
     try{
+        if(LibCsrf.valid_token(req, res)== false){ return false; }
         var data = req.body
-console.log( data  )  
+console.log( data)  
         var valid_user = await LibAuth.validUserAuth(res ,data.email, data.password )
         if (valid_user){
             req.flash('success', 'Welcom, Login completed.');  
