@@ -111,6 +111,12 @@ router.post('/delete', async function(req, res, next) {
 /******************************** 
 * 
 *********************************/
+router.get('/import_task', function(req, res, next) {
+    res.render('tasks/import_task', {});
+});
+/******************************** 
+* 
+*********************************/
 router.get('/test', function(req, res, next) {
     res.render('tasks/test', {});
   });

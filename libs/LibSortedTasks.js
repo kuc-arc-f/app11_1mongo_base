@@ -2,30 +2,27 @@
 // LibSortedTasks
 
 const {promisify} = require('util');
+import LibMongo from "../libs/LibMongo"
+
 //
 export default {
-    add_items :function(client, items){
-        const incrAsync = promisify(client.incr).bind(client);
-        const zaddAsync = promisify(client.zadd).bind(client);
-        const setAsync = promisify(client.set).bind(client);
+    /*
+    add_items :async function(items){
         try{
+            const collection = await LibMongo.get_collection("tasks" )
             items.forEach(async function (item) {
-                var reply = await incrAsync("idx-task");
-                var key = "task:" + String(reply)
-                await zaddAsync("sorted-task", reply, key);
-                var task = {
-                    title: item.title ,  
-                    content: item.content ,
-                    id: key,
-                };         
-                var json = JSON.stringify( task );    
-                await setAsync(key , json)   
+                var item = { 
+                    "title": item.title,
+                    "content": item.content,
+                    "created_at" : new Date()
+                };        
+                await collection.insertOne(item);                
             });
-            return 1;  
+            return true;  
         } catch (e) {
             console.log(e);
-            return 0;
+            return false;
         }      
     },
-
+    */
 }

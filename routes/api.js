@@ -3,6 +3,7 @@ var router = express.Router();
 var ObjectID = require('mongodb').ObjectID;
 
 import LibMongo from "../libs/LibMongo"
+import LibTasks from "../libs/LibTasks"
 
 /*
 router.get('/', function(req, res, next) {
@@ -93,7 +94,20 @@ router.get('/tasks_delete/:id',async function(req, res) {
         res.status(500).send();    
     }    
 });
-
+/******************************** 
+* 
+*********************************/
+router.post('/file_receive', function(req, res, next) {
+    let data = req.body
+    var items = JSON.parse(data.data || '[]')
+    var ret_arr = {ret:0, msg:""}
+//console.log( items )
+    var ret = LibTasks.add_items(items)    
+    if(ret){
+        ret_arr.ret = 1
+    }
+    res.json(ret_arr);
+});
 /******************************** 
 * 
 *********************************/
