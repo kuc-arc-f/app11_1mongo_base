@@ -10,6 +10,8 @@ var indexRouter = require('./routes/index');
 var loginRouter = require('./routes/login');
 var usersRouter = require('./routes/users');
 var tasksRouter = require('./routes/tasks');
+var reactTasksRouter = require('./routes/react_tasks');
+//
 var apiRouter = require('./routes/api');
 
 var app = express();
@@ -52,6 +54,8 @@ app.use('/', indexRouter);
 app.use('/login', loginRouter );
 app.use('/users', usersRouter);
 app.use('/tasks', tasksRouter );
+app.use('/react_tasks', reactTasksRouter );
+//api
 app.use('/api', apiRouter );
 
 // catch 404 and forward to error handler

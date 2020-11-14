@@ -56,14 +56,6 @@ console.log(req.params.id  );
         var task = await collection.findOne(where) 
         var param = {"docs": task };
         res.json(param);        
-        /*
-        collection.findOne({"_id": new ObjectID(req.params.id) } ,function(err, result) {
-            if (err) throw err;
-            console.log(result);
-            var param = {"docs": result };
-            res.json(param);        
-        });        */        
-
     } catch (err) {
         console.log(err);
         res.status(500).send();    
