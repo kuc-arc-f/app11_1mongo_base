@@ -1,40 +1,22 @@
 <div id="app">
-    <h1>Tasks - new</h1>
+    <h1>Task add</h1>
     <hr />
-    <div class="form-group">
-            <label for="TopicTitle">タイトル</label>
-            <input type="text" class="form-control" id="title" v-model="title">
+    <form action="/tasks/add" method="post">
+        <div>
+            <p>
+                <label>title :
+                <input type="text" name="title" size="30" maxlength="40" required>
+                </label>
+            </p>
         </div>
-        <div class="form-group">
-            <label for="TopicContent">content</label>
-            <textarea class="form-control" id="content" rows="3" v-model="content"></textarea>
+        <div>
+            <label>content :</label>
+            <input type="text" name="content" required />
         </div>
-        <button v-on:click="send_post">投稿</button>
-
+        <hr />
+        <div>
+            <input type="submit" value="Save"/>
+        </div>
+    </form>    
 </div>
 
-<!-- -->
-<script>
-new Vue({
-    el: '#app',
-    created () {
-//        this.getTasks()
-    },    
-    data: {
-        title:'',
-        content:''        
-    },
-    methods: {
-        send_post(){
-            var task = {
-                'title': this.title,
-                'content': this.content
-            };
-            axios.post('/api/tasks_new' , task ).then(res => {
-                console.log(res.data );
-            });
-        },        
-    }
-
-});
-</script>

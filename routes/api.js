@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var ObjectID = require('mongodb').ObjectID;
+
 import LibMongo from "../libs/LibMongo"
 
 /*
@@ -48,15 +49,21 @@ router.post('/tasks_new', async function(req, res){
 * 
 *********************************/
 router.get('/tasks_show/:id', async function(req, res) {
-//console.log(req.params.id  );
+console.log(req.params.id  );
     try{
         const collection = await LibMongo.get_collection("tasks" )
+        var where = { _id: new ObjectID(req.params.id) }
+        var task = await collection.findOne(where) 
+        var param = {"docs": task };
+        res.json(param);        
+        /*
         collection.findOne({"_id": new ObjectID(req.params.id) } ,function(err, result) {
             if (err) throw err;
             console.log(result);
             var param = {"docs": result };
             res.json(param);        
-        });
+        });        */        
+
     } catch (err) {
         console.log(err);
         res.status(500).send();    

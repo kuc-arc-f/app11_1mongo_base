@@ -1,65 +1,33 @@
 <div id="app">
-    <h1>Tasks - edit</h1>
+    <h1>Task edit</h1>
     <hr />
-
-    <div class="container">
-        <div class="form-group">
-            <label for="TopicTitle">タイトル</label>
-            <input type="text" class="form-control" id="title" v-model="title" >
+    <form action="/tasks/update" method="post">
+        <div>
+            <input type="hidden" name="id" size="30" maxlength="40"
+            value="<%= task._id %>" required>
+            <p>
+                <label>title :
+                <input type="text" name="title" size="30" maxlength="40"
+                value="<%= task.title %>" required>
+                </label>
+            </p>
         </div>
-        <div class="form-group">
-            <label for="TopicContent">content</label>
-            <textarea class="form-control" id="content" rows="3" v-model="content"></textarea>
+        <div>
+            <label>content :</label>
+            <input type="text" name="content" 
+            value="<%= task.content %>" required />
         </div>
-        <button v-on:click="updateTask">投稿</button>
-        <hr />
-        <button v-on:click="deleteTask">[ delete ]</button>
-    </div>
+        <div>
+            <input type="submit" value="Save"/>
+        </div>
+    </form>    
+    <hr />
+    <form action="/tasks/delete" method="post">
+        <div>
+            <input type="hidden" name="id" value="<%= task._id %>" required>                
+            <input type="submit" value="Delete"/>
+        </div>
+    </form>
 </div>
 
-<!-- -->
-<script>
-new Vue({
-    el: '#app',
-    created () {
-        this.id = "<%= params_id %>";
-        this.getItem( this.id)
-    },    
-    data: {
-        item : [],
-        title:'',
-        content:'',
-        id: 0,        
-    },
-    methods: {
-        getItem: function(id) {
-            axios.get("/api/tasks_show/" + id )
-            .then(res =>  {
-                var dat = res.data.docs
-                this.item = dat;
-                this.title = this.item.title
-                this.content = this.item.content
-                console.log( dat )
-            })            
-        },
-        updateTask: function () {
-        var task = {
-                'id' : this.id,
-                'title': this.title,
-                'content': this.content
-            };
-            axios.post('/api/tasks_update/', task ).then(res => {
-                console.log(res.data );
-            });
 
-        },
-        deleteTask: function () {
-            axios.get("/api/tasks_delete/" +this.id )
-            .then(res =>  {
-                console.log( res.data )
-            })
-        }        
-    }
-
-});
-</script>
