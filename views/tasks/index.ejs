@@ -29,14 +29,14 @@ class List extends React.Component {
     get_items(PAGE){
         axios.get("/api/tasks_index?page=" +PAGE).then(res =>  {
             var data = res.data
-            var items = res.data.docs
-//            var item_count = data.page_item.item_count
-//            var paginate_disp = data.page_item.paginate_disp;
+            var items = data.docs
+            var item_count = data.page_item.item_count
+            var paginate_disp = data.page_item.paginate_disp;
 
             var arr =[];
             this.setState({ 
-//                data: items ,item_count:item_count ,paginate_disp: paginate_disp
-                data: items ,item_count:0 ,paginate_disp: 0,
+                data: items ,item_count:item_count ,paginate_disp: paginate_disp
+//                data: items ,item_count:0 ,paginate_disp: 0,
             })
 console.log( items );
         })
@@ -56,8 +56,8 @@ console.log( items );
             return(
             <div className="paginate_wrap">
                 <div className="btn-group" role="group" aria-label="Basic example">
-                    <a href={url+ 1} className="btn btn-outline-primary">1st</a>
-                    <a href={url+ (PAGE+1)} className="btn btn-outline-primary">next</a>
+                    <a href={url+ 1} className="btn btn-outline-primary"> 1st  </a>
+                    <a href={url+ (PAGE+1)} className="btn btn-outline-primary"> > </a>
                 </div>
             </div>
             )

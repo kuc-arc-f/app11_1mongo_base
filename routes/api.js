@@ -1,26 +1,28 @@
 var express = require('express');
 var router = express.Router();
 var ObjectID = require('mongodb').ObjectID;
+const { performance } = require('perf_hooks');
 
 import LibMongo from "../libs/LibMongo"
 import LibTasks from "../libs/LibTasks"
+import LibPagenate from "../libs/LibPagenate"
 
-/*
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource-1234');
-});
-*/
 /******************************** 
 * 
 *********************************/
 router.get('/tasks_index', async function(req, res) {
     try{
         const collection = await LibMongo.get_collection("tasks" )
-        collection.find().sort({created_at: -1}).toArray(function(err, result) {
+        var page = req.query.page;
+        LibPagenate.init();
+        var page_info = LibPagenate.get_page_start(page);       
+console.log( "page=",  page, page_info ); 
+        var limit = {skip: page_info.start , limit: page_info.limit }
+        collection.find({} , limit ).sort({created_at: -1}).toArray(function(err, result) {
             if (err) throw err;
 //            console.log(result);
-            var param = {"docs": result };
-            res.json(param)            
+            var param = LibPagenate.get_page_items(result )
+            res.json(param);
         });
     } catch (err) {
         console.log(err);
@@ -102,7 +104,11 @@ router.post('/file_receive', function(req, res, next) {
     var items = JSON.parse(data.data || '[]')
     var ret_arr = {ret:0, msg:""}
 //console.log( items )
-    var ret = LibTasks.add_items(items)    
+    var t0 = performance.now();
+    var ret = LibTasks.add_items(items)
+    var t1 = performance.now();
+console.log("Call to function took= " + (t1 - t0) + " milliseconds.");
+
     if(ret){
         ret_arr.ret = 1
     }

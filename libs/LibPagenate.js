@@ -11,9 +11,8 @@ export default {
     },    
     get_page_start:function(page){
         var start_num = (page -1) * this.per_page;
-        var end_num = (page * this.per_page) -1;
         var ret ={
-            start: start_num, end: end_num,
+            start: start_num,  limit: this.per_page,
         }        
 //        console.log("per_page:",this.per_page)
         return ret;
@@ -31,15 +30,13 @@ export default {
         //ret = parseInt( num );
         return ret;
     },
-    get_page_items(data, reply_books){
+    get_page_items(data){
         var paginate_disp = this.is_paging_display(data.length)
-        const task_items = LibCommon.string_to_obj(reply_books)
-// console.log(task_items)
         var page_item = {
             "item_count":data.length ,"paginate_disp": paginate_disp
         }
         var param = {
-             "docs": task_items ,
+             "docs": data ,
              "page_item": page_item,            
         };
         return  param;       
