@@ -40,8 +40,7 @@ router.post('/add', async function(req, res, next) {
             content: data.content ,
             created_at: new Date(),
         };
-        const collection = await LibMongo.get_collection("tasks" )
-        await collection.insertOne(item);       
+        await LibMongo.add_item("tasks" ,item )
         req.flash('success', 'Complete, save task');
         res.redirect('/tasks')
     } catch (e) {
@@ -62,9 +61,8 @@ console.log(req.params.id  );
 *********************************/
 router.get('/edit/:id',async function(req, res) {
 console.log(req.params.id  );
-    const collection = await LibMongo.get_collection("tasks" )
     var where = { _id: new ObjectID(req.params.id) }
-    var task = await collection.findOne(where)
+    var task = await LibMongo.get_item("tasks" , where ) 
     res.render('tasks/edit', {task: task });
 });
 /******************************** 
@@ -74,13 +72,12 @@ router.post('/update', async function(req, res, next) {
     try{
         var data = req.body
 console.log(data )
-        const collection = await LibMongo.get_collection("tasks" )
         var item = { 
             "title": req.body.title ,
             "content": req.body.content
         };           
         var where = {"_id": new ObjectID( req.body.id )};
-        await collection.updateOne(where, { $set: item })
+        await LibMongo.update_item("tasks" , where, item )
         req.flash('success', 'Complete, save task');
         return res.redirect('/tasks')
     } catch (e) {
@@ -97,9 +94,8 @@ router.post('/delete', async function(req, res, next) {
         var data = req.body
 // console.log(data )  
         var id = data.id
-        const collection = await LibMongo.get_collection("tasks" )
         var where = { "_id": new ObjectID( id ) };
-        await collection.deleteOne(where)
+        await LibMongo.delete_item("tasks" , where )
        req.flash('success', 'Complete, delete item');
        res.redirect('/tasks')
     } catch (e) {

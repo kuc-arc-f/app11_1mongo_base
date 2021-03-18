@@ -7,35 +7,111 @@ export default {
         this.dbName = "db1"
         this.url = "mongodb://localhost:27017"
     },        
-    /*
-    get_db: function(url, dbName, collectionName ){
+    get_client:async function(){
         try{
-            let client = await MongoClient.connect(url);
-            const db = client.db(dbName);
-            return db
+          this.init()
+          let client = await MongoClient.connect(this.url);
+          return client
         } catch (err) {
-            console.log(err);
-            return false;
+          console.log(err);
+          throw new Error('Error, get_client');
         }
-    },
-    */
-   get_collection:async function(collectionName ){
+      },   
+    get_array: async function(collectionName ){
         try{
             this.init()
             let client = await MongoClient.connect( this.url);
             const db = client.db( this.dbName);
             const collection = db.collection(collectionName);
-            return collection
+            var items = await collection.find({}).sort({created_at: -1}).toArray()
+            client.close();
+            return items
         } catch (err) {
             console.log(err);
-            throw new Error('Error, get_collection');
-            //return false;
+            throw new Error('Error, get_array');
         }
     },
-    aa:function(){
-        var ret = [];
-        return ret;        
+    get_arrayWhere: async function(collectionName , where){
+        try{
+            this.init()
+            let client = await MongoClient.connect( this.url);
+            const db = client.db( this.dbName);
+            const collection = db.collection(collectionName);
+            var items = await collection.find(where).sort({created_at: -1}).toArray()
+            client.close();
+            return items
+        } catch (err) {
+            console.log(err);
+            throw new Error('Error, get_array');
+        }
     },
-  
+    get_arrayLimit: async function(collectionName , where, limit){
+        try{
+            this.init()
+            let client = await MongoClient.connect( this.url);
+            const db = client.db( this.dbName);
+            const collection = db.collection(collectionName);
+            var items = await collection.find(where, limit).sort({created_at: -1}).toArray()
+            client.close();
+            return items
+        } catch (err) {
+            console.log(err);
+            throw new Error('Error, get_array');
+        }
+    },      
+    get_item: async function(collectionName , where ){
+        try{
+            this.init()
+            let client = await MongoClient.connect( this.url);
+            const db = client.db( this.dbName);
+            const collection = db.collection(collectionName);
+            var item = await collection.findOne(where) 
+            client.close();
+            return item
+        } catch (err) {
+            console.log(err);
+            throw new Error('Error, get_item');
+        }
+    },
+    add_item: async function(collectionName ,item ){
+        try{
+            this.init()
+            let client = await MongoClient.connect( this.url);
+            const db = client.db( this.dbName);
+            const collection = db.collection(collectionName);
+            await collection.insertOne(item); 
+            client.close();
+            return item
+        } catch (err) {
+            console.log(err);
+            throw new Error('Error, add_item');
+        }
+    }, 
+    update_item: async function(collectionName , where, item ){
+        try{
+            this.init()
+            let client = await MongoClient.connect( this.url);
+            const db = client.db( this.dbName);
+            const collection = db.collection(collectionName);
+            await collection.updateOne(where, { $set: item })
+            client.close();
+        } catch (err) {
+            console.log(err);
+            throw new Error('Error, update_item');
+        }
+    }, 
+    delete_item: async function(collectionName , where ){
+        try{
+            this.init()
+            let client = await MongoClient.connect( this.url);
+            const db = client.db( this.dbName);
+            const collection = db.collection(collectionName);
+            await collection.deleteOne(where)   
+            client.close();
+        } catch (err) {
+            console.log(err);
+            throw new Error('Error, delete_item');
+        }
+    },     
 
 }

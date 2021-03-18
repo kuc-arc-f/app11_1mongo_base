@@ -10,17 +10,13 @@ import LibCommon from "../libs/LibCommon"
 /* GET users listing. */
 router.get('/', async function(req, res, next) {
   try{
-    const collection = await LibMongo.get_collection("users" )
-    collection.find().sort({created_at: -1}).toArray(function(err, result) {
-        if (err) throw err;
-//            console.log(result);
-        var param = {"docs": result };
-        res.json(param)            
-    });
-} catch (err) {
+    var result = await LibMongo.get_array("users") 
+    var param = {"docs": result };
+    res.json(param)            
+  } catch (err) {
     console.log(err);
     res.status(500).send();    
-}     
+  }     
 });
 
 /******************************** 
@@ -45,8 +41,7 @@ router.post('/add', async function(req, res, next){
             password: hashed_password ,
             created_at: new Date()
         };        
-        const collection = await LibMongo.get_collection("users" )
-        await collection.insertOne(item);
+        await LibMongo.add_item("users" ,item )
         req.flash('success', 'Complete, save User'); 
         res.redirect('/')          
     } catch (e) {

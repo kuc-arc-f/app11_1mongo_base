@@ -26,14 +26,15 @@ export default {
     },
     add_items :async function(items){
         try{
-            const collection = await LibMongo.get_collection("tasks" )
+//            const collection = await LibMongo.get_collection("tasks" )
             items.forEach(async function (item) {
                 var item = { 
                     "title": item.title,
                     "content": item.content,
                     "created_at" : new Date()
                 };        
-                await collection.insertOne(item);                
+//                await collection.insertOne(item); 
+                await LibMongo.add_item("contents" ,item )               
             });
             return true;  
         } catch (e) {

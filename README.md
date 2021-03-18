@@ -6,7 +6,7 @@
 
  date    : 2020/11/12 
 
- update : 2020/12/26 
+ update : 2021/03/18
 
 ***
 
@@ -26,6 +26,7 @@ mongoDb : 3.6.3
 * express : 4.16.1
 * ejs : 2.6.2
 
+***
 ### npm install
 
 * npm install mongodb --save
@@ -44,7 +45,14 @@ cd app1
 
 npm install
 
-npm start
+***
+### start serve
+
+yarn dev
+
+* if change, release mode
+
+yarn start
 
 ***
 ### npm

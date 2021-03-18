@@ -30,10 +30,9 @@ export default {
     validUserAuth:async function(res , mail, password ){
         try{
             var ret = false
-            const collection = await LibMongo.get_collection("users" )
             var where = { mail: mail }
-            var user = await collection.findOne(where) 
-console.log("user:", user  )            
+            var user = await LibMongo.get_item("users" , where ) 
+//console.log("user:", user  )            
             if(user != null){
                 if(bcrypt.compareSync( password,  user.password )){
                     ret = true
